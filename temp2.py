@@ -2,9 +2,16 @@ import numpy as np
 import pickle
 from fastapi import FastAPI
 from pydantic import BaseModel
+import os
 
-# Load model
-with open("C:/Users/HP/Projects For Job/trained_model.sav", "rb") as f:
+# Get the folder where this script is located
+BASE_DIR = os.path.dirname(__file__)
+
+# Combine with your model filename
+MODEL_PATH = os.path.join(BASE_DIR, "trained_model.sav")
+
+# Load the model
+with open(MODEL_PATH, "rb") as f:
     model = pickle.load(f)
 
 # Initialize FastAPI
@@ -37,4 +44,5 @@ def predict(data: InputData):
     result = "Non Diabetic" if prediction[0] == 0 else "Diabetic"
     return {"prediction": result}
 # To run the app, use the command:
+
 # uvicorn temp2:app --reload
