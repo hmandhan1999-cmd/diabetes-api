@@ -3,6 +3,10 @@ import pickle
 from fastapi import FastAPI
 from pydantic import BaseModel
 import os
+from fastapi.middleware.cors import CORSMiddleware
+
+
+
 
 # Get the folder where this script is located
 BASE_DIR = os.path.dirname(__file__)
@@ -16,6 +20,15 @@ with open(MODEL_PATH, "rb") as f:
 
 # Initialize FastAPI
 app = FastAPI()
+
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # or ["http://localhost:5500"] for specific frontend
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Input schema for API requests
 class InputData(BaseModel):
@@ -46,3 +59,4 @@ def predict(data: InputData):
 # To run the app, use the command:
 
 # uvicorn temp2:app --reload
+
